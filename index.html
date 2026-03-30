@@ -105,6 +105,22 @@
   .hebrew-prompt:focus { border-color:var(--blue); background:white; box-shadow:0 0 0 3px rgba(37,99,235,0.1); }
   .hebrew-prompt:hover:not(:focus) { background:#E8F0FE; }
 
+  /* Animate button */
+  .animate-section { padding:12px 24px; display:flex; flex-direction:column; align-items:center; gap:10px; }
+  .animate-btn { display:inline-flex; align-items:center; gap:8px; background:linear-gradient(135deg,#E11D48,#BE123C); color:white; border:none; padding:10px 24px; border-radius:12px; font-family:'Heebo',sans-serif; font-size:14px; font-weight:700; cursor:pointer; transition:all 0.3s; box-shadow:0 3px 12px rgba(225,29,72,0.3); }
+  .animate-btn:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(225,29,72,0.4); }
+  .animate-btn:disabled { opacity:0.5; cursor:not-allowed; transform:none; }
+  .animate-btn .btn-icon { font-size:18px; }
+  .animate-progress { width:100%; max-width:400px; display:none; }
+  .animate-progress.active { display:block; }
+  .progress-track { height:6px; background:#F3E8FF; border-radius:3px; overflow:hidden; }
+  .progress-inner { height:100%; width:0%; background:linear-gradient(90deg,#E11D48,#F59E0B); border-radius:3px; transition:width 0.5s ease; }
+  .animate-status { font-size:12px; color:var(--text-light); margin-top:4px; text-align:center; }
+  .video-result { width:100%; max-width:500px; margin-top:10px; border-radius:12px; overflow:hidden; box-shadow:0 4px 20px rgba(0,0,0,0.15); }
+  .video-result video { width:100%; display:block; border-radius:12px; }
+  .video-actions { display:flex; gap:8px; justify-content:center; margin-top:8px; }
+  .video-dl-btn { display:inline-flex; align-items:center; gap:6px; background:var(--green); color:white; border:none; padding:6px 16px; border-radius:8px; font-family:'Heebo',sans-serif; font-size:12px; font-weight:600; cursor:pointer; text-decoration:none; }
+
   /* Sync */
   .sync-bar { padding:6px 24px; display:flex; align-items:center; justify-content:center; gap:8px; }
   .sync-btn { display:inline-flex; align-items:center; gap:6px; background:linear-gradient(135deg,var(--blue),#1D4ED8); color:white; border:none; padding:7px 18px; border-radius:20px; font-family:'Heebo',sans-serif; font-size:12.5px; font-weight:600; cursor:pointer; transition:all 0.2s; box-shadow:0 2px 6px rgba(37,99,235,0.3); }
@@ -410,6 +426,16 @@ function buildCards() {
         <div class="english-label"><span>🇺🇸</span> Prompt באנגלית (לחץ להעתקה)</div>
         <div class="prompt-text" id="eng-${idx}" onclick="copyPrompt(${idx})">${item.english}</div>
       </div>
+      <div class="animate-section" id="anim-section-${idx}">
+        <button class="animate-btn" id="anim-btn-${idx}" onclick="animateInGrok(${idx})">
+          <span class="btn-icon">🎬</span> הנפש בגרוק
+        </button>
+        <div class="animate-progress" id="anim-progress-${idx}">
+          <div class="progress-track"><div class="progress-inner" id="anim-bar-${idx}"></div></div>
+          <div class="animate-status" id="anim-status-${idx}"></div>
+        </div>
+        <div id="anim-result-${idx}"></div>
+      </div>
     `;
     container.appendChild(card);
   });
@@ -523,6 +549,127 @@ window.addEventListener('scroll', () => {
 });
 
 buildCards();
+
+// ── Grok Video Animation via fal.ai ──────────────────────────
+const FAL_KEY = '0861f767-9a87-4fe7-a503-d2ecf78fa407:37bc527fdc74d0ed4d4ea12820c87e35';
+const FAL_MODEL = 'xai/grok-imagine-video/image-to-video';
+const FAL_BASE = 'https://queue.fal.run';
+
+async function falRequest(path, method, body) {
+  const opts = {
+    method,
+    headers: { 'Authorization': `Key ${FAL_KEY}`, 'Content-Type': 'application/json' }
+  };
+  if (body) opts.body = JSON.stringify(body);
+  const r = await fetch(`${FAL_BASE}/${FAL_MODEL}${path}`, opts);
+  return r.json();
+}
+
+async function uploadImageToFal(dataUrl) {
+  // Convert data URL to blob
+  const res = await fetch(dataUrl);
+  const blob = await res.blob();
+
+  // Get upload URL from fal
+  const initResp = await fetch('https://rest.alpha.fal.ai/storage/upload/initiate', {
+    method: 'POST',
+    headers: { 'Authorization': `Key ${FAL_KEY}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ file_name: 'ref.png', content_type: blob.type })
+  });
+  const { upload_url, file_url } = await initResp.json();
+
+  // Upload the file
+  await fetch(upload_url, { method: 'PUT', headers: { 'Content-Type': blob.type }, body: blob });
+  return file_url;
+}
+
+function setAnimProgress(idx, pct, msg) {
+  const prog = document.getElementById(`anim-progress-${idx}`);
+  prog.classList.add('active');
+  document.getElementById(`anim-bar-${idx}`).style.width = pct + '%';
+  document.getElementById(`anim-status-${idx}`).textContent = msg;
+}
+
+async function animateInGrok(idx) {
+  const btn = document.getElementById(`anim-btn-${idx}`);
+  const zone = document.getElementById(`imgzone-${idx}`);
+  const img = zone.querySelector('img');
+
+  if (!img || !img.src) {
+    showToast('העלו תמונת רפרנס קודם! 🖼️');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinning">🎬</span> מייצר וידיאו...';
+
+  try {
+    // Step 1: Upload image
+    setAnimProgress(idx, 10, '📤 מעלה תמונה...');
+    const imageUrl = await uploadImageToFal(img.src);
+    setAnimProgress(idx, 25, '✓ תמונה הועלתה');
+
+    // Step 2: Submit job
+    const prompt = document.getElementById(`eng-${idx}`).textContent.trim();
+    setAnimProgress(idx, 30, '🚀 שולח לגרוק...');
+
+    const submitResp = await falRequest('', 'POST', {
+      prompt: prompt,
+      image_url: imageUrl,
+      duration: 5,
+      aspect_ratio: '16:9',
+      resolution: '720p'
+    });
+
+    const requestId = submitResp.request_id;
+    if (!requestId) throw new Error('No request_id received');
+    setAnimProgress(idx, 40, '⏳ בתור... (request: ' + requestId.slice(0,8) + ')');
+
+    // Step 3: Poll for completion
+    let done = false;
+    let pct = 40;
+    while (!done) {
+      await new Promise(r => setTimeout(r, 3000));
+      const status = await falRequest(`/requests/${requestId}/status`, 'GET');
+
+      if (status.status === 'COMPLETED') {
+        done = true;
+        setAnimProgress(idx, 90, '📥 מוריד וידיאו...');
+      } else if (status.status === 'FAILED') {
+        throw new Error(status.error || 'Generation failed');
+      } else {
+        pct = Math.min(pct + 5, 85);
+        const label = status.status === 'IN_QUEUE' ? 'בתור...' : 'מייצר...';
+        setAnimProgress(idx, pct, `⏳ ${label}`);
+      }
+    }
+
+    // Step 4: Get result
+    const result = await falRequest(`/requests/${requestId}`, 'GET');
+    const videoUrl = result?.video?.url;
+    if (!videoUrl) throw new Error('No video URL in result');
+
+    setAnimProgress(idx, 100, '✓ הוידיאו מוכן!');
+
+    // Show video
+    document.getElementById(`anim-result-${idx}`).innerHTML = `
+      <div class="video-result">
+        <video src="${videoUrl}" controls autoplay loop muted playsinline></video>
+      </div>
+      <div class="video-actions">
+        <a class="video-dl-btn" href="${videoUrl}" download="shot-${idx+1}.mp4" target="_blank">⬇️ הורד MP4</a>
+      </div>
+    `;
+    showToast(`שוט ${idx+1} נוצר בהצלחה! 🎬`);
+
+  } catch (e) {
+    setAnimProgress(idx, 0, '✗ שגיאה: ' + e.message);
+    showToast('שגיאה ביצירת וידיאו: ' + e.message);
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = '<span class="btn-icon">🎬</span> הנפש בגרוק';
+}
 </script>
 </body>
 </html>
