@@ -105,6 +105,16 @@
   .hebrew-prompt:focus { border-color:var(--blue); background:white; box-shadow:0 0 0 3px rgba(37,99,235,0.1); }
   .hebrew-prompt:hover:not(:focus) { background:#E8F0FE; }
 
+  /* Download video */
+  .download-section { padding:0 24px 8px; }
+  .download-row { display:flex; align-items:center; gap:10px; }
+  .dl-btn { display:inline-flex; align-items:center; gap:7px; background:linear-gradient(135deg,#059669,#047857); color:white; border:none; padding:8px 20px; border-radius:10px; font-family:'Heebo',sans-serif; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; box-shadow:0 2px 8px rgba(5,150,105,0.25); text-decoration:none; }
+  .dl-btn:hover { transform:translateY(-1px); box-shadow:0 4px 14px rgba(5,150,105,0.35); }
+  .dl-btn.disabled { opacity:0.4; pointer-events:none; }
+  .dl-badge { font-size:11px; color:var(--text-light); }
+  .video-preview { width:100%; max-width:400px; margin-top:8px; border-radius:10px; overflow:hidden; box-shadow:0 3px 12px rgba(0,0,0,0.12); }
+  .video-preview video { width:100%; display:block; }
+
   /* Animate button */
   .animate-section { padding:12px 24px; display:flex; flex-direction:column; align-items:center; gap:10px; }
   .animate-btn { display:inline-flex; align-items:center; gap:8px; background:linear-gradient(135deg,#E11D48,#BE123C); color:white; border:none; padding:10px 24px; border-radius:12px; font-family:'Heebo',sans-serif; font-size:14px; font-weight:700; cursor:pointer; transition:all 0.3s; box-shadow:0 3px 12px rgba(225,29,72,0.3); }
@@ -381,6 +391,36 @@ const changedState = new Array(DATA.length).fill(false);
 
 const charColors = { bezalel:'char-bezalel', oshi:'char-oshi', saba:'char-saba', scene:'char-scene' };
 
+const AVAILABLE_VIDEOS = [1,2,3,4,5,6,7,8,9];
+
+function getDownloadHTML(idx) {
+  const shotNum = String(idx+1).padStart(2,'0');
+  const hasVideo = AVAILABLE_VIDEOS.includes(idx+1);
+  if (hasVideo) {
+    return `
+      <div class="download-row">
+        <a class="dl-btn" href="videos/shot-${shotNum}.mp4" download="shot-${shotNum}.mp4">⬇️ הורד סצנה ${idx+1}</a>
+        <span class="dl-badge">MP4 • 5 שניות</span>
+        <button class="dl-btn" style="background:linear-gradient(135deg,#6366F1,#4F46E5)" onclick="togglePreview(${idx})">▶️ צפה</button>
+      </div>
+      <div class="video-preview" id="preview-${idx}" style="display:none">
+        <video src="videos/shot-${shotNum}.mp4" controls playsinline></video>
+      </div>`;
+  }
+  return `<div class="download-row"><span class="dl-btn disabled">⏳ סצנה ${idx+1} — טרם נוצרה</span></div>`;
+}
+
+function togglePreview(idx) {
+  const el = document.getElementById(`preview-${idx}`);
+  if (el.style.display === 'none') {
+    el.style.display = 'block';
+    el.querySelector('video').play();
+  } else {
+    el.style.display = 'none';
+    el.querySelector('video').pause();
+  }
+}
+
 function buildCards() {
   const container = document.getElementById('timeline');
   DATA.forEach((item, idx) => {
@@ -425,6 +465,9 @@ function buildCards() {
       <div class="english-section">
         <div class="english-label"><span>🇺🇸</span> Prompt באנגלית (לחץ להעתקה)</div>
         <div class="prompt-text" id="eng-${idx}" onclick="copyPrompt(${idx})">${item.english}</div>
+      </div>
+      <div class="download-section" id="dl-section-${idx}">
+        ${getDownloadHTML(idx)}
       </div>
       <div class="animate-section" id="anim-section-${idx}">
         <button class="animate-btn" id="anim-btn-${idx}" onclick="animateInGrok(${idx})">
