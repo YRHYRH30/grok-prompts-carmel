@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>פרומפטים לגרוק - תסריט 1: הר הכרמל</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=Frank+Ruhl+Libre:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --warm-bg: #FFF8F0; --card-bg: #FFFFFF; --accent: #D4763C; --accent-light: #F5E6D3;
+    --accent-dark: #8B4513; --text-primary: #2C1810; --text-secondary: #6B5B4E;
+    --text-light: #9B8B7E; --border: #E8DDD4; --gold: #C6952B; --gold-light: #FDF6E3;
+    --shadow: rgba(44,24,16,0.08); --shadow-hover: rgba(44,24,16,0.15);
+    --blue: #2563EB; --blue-light: #EFF6FF; --green: #16A34A; --green-light: #F0FDF4;
+    --purple: #7C3AED; --purple-light: #F5F3FF;
+  }
+  body { font-family:'Heebo',sans-serif; background:var(--warm-bg); color:var(--text-primary); line-height:1.7; min-height:100vh; }
+
+  .hero { background:linear-gradient(135deg,#2C1810 0%,#5C3A1E 40%,#8B5E3C 100%); padding:60px 20px 80px; text-align:center; position:relative; overflow:hidden; }
+  .hero::before { content:''; position:absolute; top:0;left:0;right:0;bottom:0; background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); opacity:0.5; }
+  .hero-content { position:relative; z-index:1; max-width:700px; margin:0 auto; }
+  .hero-icon { font-size:48px; margin-bottom:20px; display:inline-block; animation:flicker 3s ease-in-out infinite; }
+  @keyframes flicker { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.8;transform:scale(1.05)} }
+  .hero h1 { font-family:'Frank Ruhl Libre',serif; font-size:clamp(28px,5vw,44px); font-weight:700; color:#FFF8F0; margin-bottom:12px; }
+  .hero .subtitle { font-size:clamp(16px,2.5vw,20px); color:rgba(255,248,240,0.7); font-weight:300; margin-bottom:30px; }
+  .hero-meta { display:inline-flex; gap:24px; background:rgba(255,255,255,0.08); backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,0.1); border-radius:50px; padding:12px 28px; font-size:14px; color:rgba(255,248,240,0.8); }
+  .hero-meta span { display:flex; align-items:center; gap:6px; }
+
+  .container { max-width:950px; margin:-40px auto 60px; padding:0 20px; position:relative; z-index:2; }
+
+  .style-guide { background:linear-gradient(135deg,var(--gold-light) 0%,#FFF8F0 100%); border:1px solid #E8D5A8; border-radius:16px; padding:28px 32px; margin-bottom:32px; position:relative; }
+  .style-guide::before { content:''; position:absolute; top:0;left:0;right:0; height:3px; background:linear-gradient(90deg,var(--gold),var(--accent)); border-radius:16px 16px 0 0; }
+  .style-guide h3 { font-size:16px; font-weight:700; color:var(--gold); margin-bottom:10px; display:flex; align-items:center; gap:8px; }
+  .style-guide p { font-size:14px; color:var(--text-secondary); line-height:1.8; }
+
+  .edit-hint { background:linear-gradient(135deg,#EFF6FF,#F0FDF4); border:1px solid #BFDBFE; border-radius:12px; padding:16px 24px; margin-bottom:24px; display:flex; align-items:center; gap:12px; font-size:14px; color:var(--text-secondary); }
+  .edit-hint .hint-icon { font-size:24px; flex-shrink:0; }
+
+  /* Card */
+  .prompt-card { background:var(--card-bg); border-radius:16px; border:1px solid var(--border); margin-bottom:24px; overflow:hidden; transition:all 0.3s; box-shadow:0 2px 8px var(--shadow); }
+  .prompt-card:hover { box-shadow:0 8px 30px var(--shadow-hover); transform:translateY(-2px); border-color:var(--accent); }
+
+  .prompt-header { display:flex; align-items:center; gap:16px; padding:20px 24px 16px; border-bottom:1px solid #F5F0EB; }
+  .prompt-number { width:44px; height:44px; border-radius:12px; background:linear-gradient(135deg,var(--accent),var(--accent-dark)); color:white; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:18px; flex-shrink:0; box-shadow:0 2px 8px rgba(212,118,60,0.3); }
+  .prompt-title { font-size:17px; font-weight:600; color:var(--text-primary); line-height:1.4; }
+  .prompt-subtitle { font-size:13px; color:var(--text-light); margin-top:2px; }
+
+  /* Character badge */
+  .char-badge { display:inline-flex; align-items:center; gap:5px; padding:3px 12px; border-radius:20px; font-size:12px; font-weight:600; margin-right:8px; }
+  .char-bezalel { background:#DBEAFE; color:#1D4ED8; }
+  .char-oshi { background:#FEF3C7; color:#B45309; }
+  .char-saba { background:#E0E7FF; color:#4338CA; }
+  .char-scene { background:#F3E8FF; color:#7C3AED; }
+
+  .script-line { padding:0 24px 12px; display:flex; align-items:flex-start; gap:8px; }
+  .script-label { font-size:12px; font-weight:600; color:var(--accent); background:var(--accent-light); padding:2px 10px; border-radius:20px; flex-shrink:0; margin-top:2px; }
+  .script-text { font-family:'Frank Ruhl Libre',serif; font-size:15px; color:var(--text-primary); line-height:1.7; }
+
+  /* Image upload zone */
+  .image-section { padding:0 24px 16px; }
+  .image-label { display:flex; align-items:center; gap:8px; font-size:12px; font-weight:600; color:var(--purple); margin-bottom:8px; }
+
+  .image-row { display:flex; gap:12px; align-items:stretch; }
+
+  .image-upload-zone {
+    width:160px; min-height:160px; flex-shrink:0;
+    border:2px dashed #C4B5FD; border-radius:12px;
+    background:var(--purple-light);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    cursor:pointer; transition:all 0.2s; position:relative; overflow:hidden;
+  }
+  .image-upload-zone:hover { border-color:var(--purple); background:#EDE9FE; }
+  .image-upload-zone .upload-icon { font-size:32px; margin-bottom:6px; opacity:0.6; }
+  .image-upload-zone .upload-text { font-size:11px; color:var(--purple); text-align:center; padding:0 8px; }
+  .image-upload-zone input[type="file"] { display:none; }
+  .image-upload-zone img {
+    position:absolute; top:0;left:0; width:100%; height:100%;
+    object-fit:cover; border-radius:10px;
+  }
+  .image-upload-zone .remove-img {
+    position:absolute; top:6px; left:6px; z-index:2;
+    background:rgba(0,0,0,0.6); color:white; border:none;
+    width:24px; height:24px; border-radius:50%; cursor:pointer;
+    font-size:14px; display:none; align-items:center; justify-content:center;
+  }
+  .image-upload-zone:hover .remove-img { display:flex; }
+
+  .image-instructions {
+    flex:1; background:#FAFAF8; border-radius:10px; border:1px solid #F0EBE5;
+    padding:12px 16px; font-size:12.5px; color:var(--text-light); line-height:1.7;
+  }
+  .image-instructions strong { color:var(--text-secondary); }
+
+  /* Hebrew */
+  .hebrew-section { padding:0 24px 8px; }
+  .hebrew-label { display:flex; align-items:center; gap:8px; font-size:12px; font-weight:600; color:var(--blue); margin-bottom:6px; }
+  .hebrew-prompt {
+    direction:rtl; text-align:right; font-family:'Heebo',sans-serif;
+    font-size:14.5px; line-height:1.9; color:var(--text-primary);
+    background:var(--blue-light); border-radius:10px; padding:16px 18px;
+    border:2px solid transparent; outline:none; transition:all 0.2s;
+    min-height:60px; cursor:text;
+  }
+  .hebrew-prompt:focus { border-color:var(--blue); background:white; box-shadow:0 0 0 3px rgba(37,99,235,0.1); }
+  .hebrew-prompt:hover:not(:focus) { background:#E8F0FE; }
+
+  /* Sync */
+  .sync-bar { padding:6px 24px; display:flex; align-items:center; justify-content:center; gap:8px; }
+  .sync-btn { display:inline-flex; align-items:center; gap:6px; background:linear-gradient(135deg,var(--blue),#1D4ED8); color:white; border:none; padding:7px 18px; border-radius:20px; font-family:'Heebo',sans-serif; font-size:12.5px; font-weight:600; cursor:pointer; transition:all 0.2s; box-shadow:0 2px 6px rgba(37,99,235,0.3); }
+  .sync-btn:hover { transform:translateY(-1px); box-shadow:0 4px 12px rgba(37,99,235,0.4); }
+  .sync-btn:disabled { opacity:0.5; cursor:not-allowed; transform:none; }
+  .sync-status { font-size:11px; color:var(--text-light); display:flex; align-items:center; gap:4px; }
+  .sync-status.synced { color:var(--green); }
+  .sync-status.changed { color:#EAB308; }
+
+  /* English */
+  .english-section { padding:0 24px 20px; }
+  .english-label { display:flex; align-items:center; gap:8px; font-size:12px; font-weight:600; color:var(--green); margin-bottom:6px; }
+  .prompt-text {
+    font-size:14px; line-height:1.9; color:var(--text-secondary);
+    direction:ltr; text-align:left; font-family:'Segoe UI',system-ui,sans-serif;
+    background:var(--green-light); border-radius:10px; padding:16px 18px;
+    border:2px solid transparent; cursor:pointer; transition:all 0.2s;
+  }
+  .prompt-text:hover { background:#DCFCE7; }
+  .prompt-text.copied { border-color:var(--green); background:#DCFCE7; }
+
+  /* Actions */
+  .actions-row { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin:40px 0; }
+  .action-btn { display:inline-flex; align-items:center; gap:10px; color:white; border:none; padding:14px 32px; border-radius:50px; font-family:'Heebo',sans-serif; font-size:15px; font-weight:600; cursor:pointer; transition:all 0.3s; }
+  .action-btn:hover { transform:translateY(-2px); }
+  .btn-copy-all { background:linear-gradient(135deg,var(--accent),var(--accent-dark)); box-shadow:0 4px 15px rgba(212,118,60,0.3); }
+  .btn-sync-all { background:linear-gradient(135deg,var(--blue),#1D4ED8); box-shadow:0 4px 15px rgba(37,99,235,0.3); }
+
+  .footer { text-align:center; padding:40px 20px; color:var(--text-light); font-size:13px; border-top:1px solid var(--border); margin-top:40px; }
+  .footer strong { color:var(--text-secondary); }
+
+  .progress-bar { position:fixed; top:0;left:0;right:0; height:3px; background:rgba(0,0,0,0.05); z-index:100; }
+  .progress-fill { height:100%; background:linear-gradient(90deg,var(--accent),var(--gold)); width:0%; transition:width 0.3s; }
+
+  .toast { position:fixed; bottom:30px; left:50%; transform:translateX(-50%) translateY(100px); background:#2C1810; color:white; padding:12px 28px; border-radius:50px; font-size:14px; font-weight:500; z-index:1000; transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); box-shadow:0 8px 30px rgba(0,0,0,0.2); }
+  .toast.show { transform:translateX(-50%) translateY(0); }
+
+  .timeline { position:relative; }
+  .timeline::before { content:''; position:absolute; right:41px; top:0; bottom:0; width:2px; background:linear-gradient(to bottom,var(--accent-light),var(--border),var(--accent-light)); z-index:0; }
+  .prompt-card { position:relative; z-index:1; }
+
+  @media (max-width:600px) {
+    .hero { padding:40px 16px 60px; }
+    .hero-meta { flex-direction:column; gap:8px; padding:12px 20px; }
+    .container { padding:0 12px; }
+    .prompt-header,.prompt-body,.hebrew-section,.english-section,.script-line,.sync-bar,.image-section { padding-right:16px; padding-left:16px; }
+    .timeline::before { display:none; }
+    .actions-row { flex-direction:column; align-items:center; }
+    .image-row { flex-direction:column; }
+    .image-upload-zone { width:100%; min-height:120px; }
+  }
+  @keyframes spin { to{transform:rotate(360deg)} }
+  .spinning { animation:spin 1s linear infinite; display:inline-block; }
+</style>
+</head>
+<body>
+
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+<div class="hero">
+  <div class="hero-content">
+    <div class="hero-icon">🔥</div>
+    <h1>פרומפטים לגרוק</h1>
+    <div class="subtitle">תסריט 1: הר הכרמל — אליהו מול נביאי הבעל</div>
+    <div class="hero-meta">
+      <span>🎬 15 פרומפטים</span>
+      <span>⏱ ~40 שניות</span>
+      <span>👨‍👧‍👦 בצלאל, אושי, סבא</span>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="style-guide">
+    <h3>🎨 הוראות סגנון כלליות</h3>
+    <p>כל פרומפט מייצר סרטון קצר (3-5 שניות). הסגנון: אנימציה חמימה עם קווי מתאר רכים וצבעים חמים. משפחה חרדית ישראלית בסלון ביתי. <strong>בצלאל (האבא)</strong> — חרדי עם חולצה לבנה וכיפה. <strong>אושי</strong> — ילד בן 8, סקרן וישיר. <strong>סבא</strong> — זקן וחכם עם זקן לבן וכוס תה.</p>
+  </div>
+
+  <div class="edit-hint">
+    <div class="hint-icon">✏️</div>
+    <div>
+      <strong>ניתן לערוך!</strong> תקנו את העברית ← לחצו ״תרגם לאנגלית״ ← האנגלית מתעדכנת. גררו תמונת דמות לכל שוט. לחצו על האנגלית להעתקה.
+    </div>
+  </div>
+
+  <div class="timeline" id="timeline"></div>
+
+  <div class="actions-row">
+    <button class="action-btn btn-sync-all" onclick="syncAll()">🔄 תרגם הכל לאנגלית</button>
+    <button class="action-btn btn-copy-all" onclick="copyAll()">📋 העתק את כל הפרומפטים</button>
+  </div>
+
+</div>
+
+<div class="footer">
+  <strong>אחוות תורה — פסח תשפ״ו</strong><br>
+  ארבע שאלות, ארבעה מקומות — משפחת אחוות תורה
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const DATA = [
+  {
+    title: "פתיחה — סלון הבית",
+    subtitle: "הצגת הסצנה והדמויות",
+    script: "[סלון. שולחן. בצלאל ואושי יושבים. אושי אוכל ענבים.]",
+    speaker: "scene",
+    speakerName: "סצנה",
+    imageHint: "אין דמות מדברת — שוט כללי של הסלון. העלו תמונת רפרנס של הסלון אם יש.",
+    hebrew: "אנימציה חמימה מצוירת ביד, קווי מתאר רכים, צבעים חמים. סלון ישראלי נעים ומואר באור ערב כתום. שולחן אוכל מעץ במרכז. אב חרדי (חולצה לבנה מכופתרת, כיפה סרוגה קטנה) יושב בנינוחות ליד השולחן, ידיו מונחות על השולחן. לידו בנו בן ה-8, ילד עם פנים עגולות וחייכניות, שיער חום קצר, אוכל ענבים מקערה — יד אחת מחזיקה ענב, השנייה מונחת על הכיסא. תאורת ערב חמימה, צללים רכים. מצלמה: שוט בינוני רחב של שניהם.",
+    english: "Warm hand-drawn animation style, soft outlines, warm colors. A cozy Israeli living room lit with warm orange evening light. A wooden dining table in the center. A religious Jewish father (white button-up shirt, small knitted kippah) sits relaxed at the table, hands resting on the surface. Next to him his curious 8-year-old son with a round cheerful face, short brown hair, eating grapes from a bowl — one hand holding a grape, the other resting on the chair. Warm evening lighting, soft shadows. Camera: medium wide shot of both."
+  },
+  {
+    title: "אושי שואל על הענבים",
+    subtitle: "אושי: ״אבא, מה מברכים על ענבים?״",
+    script: "אושי: אבא, מה מברכים על ענבים? — בצלאל: בורא פרי העץ",
+    speaker: "oshi",
+    speakerName: "אושי מדבר",
+    imageHint: "העלו תמונת רפרנס של אושי (הילד בן 8). גרוק ישתמש בה ליצירת עקביות.",
+    hebrew: "אותו סגנון אנימציה חמים. תקריב של הילד בן ה-8 בלבד. הוא מחזיק ענב ביד ימין מורמת לגובה הפנים, מביט למעלה בסקרנות — גבות מורמות, עיניים גדולות ופקוחות לרווחה, פה קצת פתוח בשאלה, סנטר מורם. יד שמאל מונחת שטוחה על השולחן, אצבעות מתופפות בחוסר סבלנות. תאורה חמימה, רקע מטושטש.",
+    english: "Same warm animation style. Close-up of the 8-year-old boy only. He holds a grape in his raised right hand near his face, looking up with curiosity — eyebrows raised, big wide-open eyes, mouth slightly open in a question, chin lifted. His left hand rests flat on the table, fingers tapping impatiently. Warm lighting, blurred background."
+  },
+  {
+    title: "אושי מתוסכל",
+    subtitle: "אושי: ״אוף! ידעתי!״",
+    script: "אושי: אוף! ידעתי! — בצלאל: למה אוף?",
+    speaker: "oshi",
+    speakerName: "אושי מדבר",
+    imageHint: "אותה תמונת רפרנס של אושי.",
+    hebrew: "אותו סגנון אנימציה חמים. תקריב בינוני של הילד בלבד. הוא מניח את הענב בחזרה בקערה בתנועה עצבנית וחדה, לחיים מנופחות לגמרי, מצח מקומט עם קו עמוק בין הגבות, שפתיים דחוסות ובולטות החוצה — מבע של תסכול ילדותי טהור. שתי ידיו על השולחן באגרופים קלים, כתפיים מורמות. רקע מטושטש.",
+    english: "Same warm animation style. Medium close-up of the boy only. He drops the grape back into the bowl with a sharp annoyed gesture, cheeks fully puffed out, forehead wrinkled with a deep line between the brows, lips pressed tight and pouting outward — pure childish frustration. Both hands on the table in soft fists, shoulders raised. Blurred background."
+  },
+  {
+    title: "אושי מספר על ההפסקה",
+    subtitle: "״כולם אמרו שמברכים בורא פרי הגפן... ולא אמרתי כלום״",
+    script: "אושי מספר שבהפסקה כולם טעו בברכה והוא שתק.",
+    speaker: "oshi",
+    speakerName: "אושי מדבר",
+    imageHint: "אותה תמונת רפרנס של אושי.",
+    hebrew: "אותו סגנון אנימציה חמים. תקריב של הילד בלבד, מדבר בהתרגשות. ידיים זזות באוויר — יד ימין מורמת עם אצבעות פרושות כאילו מתאר קבוצה גדולה של ילדים, יד שמאל מצביעה על החזה שלו בתנועה חזקה. הבעת פנים מתלבטת ומורכבת: גבות קמוטות, עיניים מביטות הצידה ולמטה בבושה, שפתיים מכווצות, סנטר רועד קלות. כתפיים מתכווצות כשהוא מספר את החלק המביך. רקע מטושטש.",
+    english: "Same warm animation style. Close-up of the boy only, talking excitedly. Hands moving in the air — right hand raised with fingers spread as if describing a large group of kids, left hand pointing firmly at his own chest. Conflicted complex facial expression: furrowed brows, eyes looking sideways and downward in shame, lips pursed, chin trembling slightly. Shoulders hunching as he tells the embarrassing part. Blurred background."
+  },
+  {
+    title: "״הם היו 450 ואני אחד״",
+    subtitle: "הרגע הרגשי — אושי מרגיש לבד",
+    script: "אושי: כי הם היו המון. איזה… 450. ואני אחד.",
+    speaker: "oshi",
+    speakerName: "אושי מדבר",
+    imageHint: "אותה תמונת רפרנס של אושי — הבעת פנים פגיעה.",
+    hebrew: "אותו סגנון אנימציה חמים. תקריב צמוד של הילד. הוא נראה קטן ופגיע — כתפיים שמוטות, ראש מעט מושפל. יד ימין מרימה אצבע אחת בודדת לאט, עם הבעה עצובה: עיניים לחות מעט, שפתיים רועדות קלות, גבות מורמות באמצע. האב ברקע מטושטש, ידו מונחת על ליבו באמפתיה, עיניים מלאות רגש.",
+    english: "Same warm animation style. Tight close-up of the boy. He looks small and vulnerable — shoulders slumped, head slightly lowered. His right hand slowly raises a single finger, with a sad expression: eyes slightly moist, lips trembling faintly, brows raised in the middle. The father in the soft background, hand placed over his heart in empathy, eyes full of emotion."
+  },
+  {
+    title: "סבא מרים ראש",
+    subtitle: "סבא נכנס לשיחה — הרגע המכריע",
+    script: "[סבא, שישב בצד עם תה, מרים את הראש.]",
+    speaker: "saba",
+    speakerName: "סבא",
+    imageHint: "העלו תמונת רפרנס של הסבא (זקן, חכם, זקן לבן). גרוק ישתמש בה לעקביות.",
+    hebrew: "אותו סגנון אנימציה חמים. שוט בינוני. סבא זקן וחכם יושב בכורסה בפינת הסלון. זקן לבן ארוך, עיניים עמוקות. הוא היה יושב בשקט עם כוס תה — ופתאום מרים את ראשו בעניין. עיניו נפתחות לרווחה, גבה אחת מורמת, חיוך קל ויודע מופיע בזווית הפה. יד אחת מחזיקה את כוס התה, השנייה מורמת קלות מהכורסה כאילו אומרת ״רגע, רגע...״ תאורה חמימה.",
+    english: "Same warm animation style. Medium shot. An elderly wise grandfather sits in an armchair in the corner of the living room. Long white beard, deep-set eyes. He was sitting quietly with a cup of tea — and suddenly lifts his head with interest. His eyes open wide, one eyebrow raised, a slight knowing smile appears at the corner of his mouth. One hand holds the tea cup, the other lifts slightly from the armchair as if saying 'wait, wait...' Warm lighting."
+  },
+  {
+    title: "סבא מספר: ״450 מול אחד״",
+    subtitle: "״היה פעם מישהו שעמד ככה. לבד. על הר. מול כולם.״",
+    script: "סבא: ארבע מאות וחמישים נגד אחד? מעניין. היה פעם מישהו שעמד ככה. לבד. על הר. מול כולם.",
+    speaker: "saba",
+    speakerName: "סבא מדבר",
+    imageHint: "אותה תמונת רפרנס של הסבא.",
+    hebrew: "אותו סגנון אנימציה חמים. תקריב בינוני של הסבא בלבד בכורסה. גוף נשען קדימה, יד ימין מחזיקה כוס תה ליד החזה, יד שמאל פרושה לפניו עם כף יד פתוחה — כאילו מצייר הר באוויר. עיניו רחוקות ומזוגגות, מביט הרחק מעבר למצלמה, כאילו רואה את הסצנה מהעבר. פנים רציניות ומרשימות, קמטי מצח עמוקים, שפתיים זזות בהנאה של מספר סיפורים. רקע מטושטש.",
+    english: "Same warm animation style. Medium close-up of the grandfather only in his armchair. Body leaning forward, right hand holding tea cup near his chest, left hand spread out with open palm — as if painting a mountain in the air. His eyes are distant and glazed, gazing far beyond the camera, as if seeing the ancient scene. Serious impressive face, deep forehead wrinkles, lips moving with a storyteller's pleasure. Blurred background."
+  },
+  {
+    title: "אושי שואל: ״ומה קרה?״",
+    subtitle: "סקרנות — אושי נשבה בסיפור",
+    script: "אושי: ומה קרה?",
+    speaker: "oshi",
+    speakerName: "אושי מדבר",
+    imageHint: "תמונת רפרנס של אושי.",
+    hebrew: "אותו סגנון אנימציה חמים. תקריב של הילד מזווית נמוכה, מביט למעלה אל הסבא. נשען קדימה על קצות הכיסא, שתי ידיו אוחזות בקצה השולחן בהתרגשות. עיניים ענקיות ופקוחות לרווחה, גבות מורמות עד הסוף, פה פתוח קלות — הבעה של סקרנות טהורה ומוחלטת. הגוף כולו נוטה קדימה.",
+    english: "Same warm animation style. Close-up of the boy from a low angle, looking up at the grandfather. Leaning forward on the edge of his chair, both hands gripping the table edge with excitement. Huge wide-open eyes, eyebrows raised all the way up, mouth slightly open — an expression of pure absolute curiosity. His whole body tilting forward."
+  },
+  {
+    title: "הרבים צעקו, הבודד התפלל",
+    subtitle: "״כלום לא קרה. ואז הבודד — התפלל. בשקט.״",
+    script: "סבא: הרבים צעקו וצעקו. שעות. כלום לא קרה. ואז הבודד — התפלל. בשקט. ואש ירדה מהשמיים.",
+    speaker: "saba",
+    speakerName: "סבא מדבר",
+    imageHint: "אותה תמונת רפרנס של הסבא — סיפור דרמטי.",
+    hebrew: "אותו סגנון אנימציה חמים. תקריב בינוני של הסבא בלבד. הוא מספר בדרמטיות — בהתחלה שתי ידיים מורמות ומנופפות לצדדים כאילו מתאר המון צועק, אצבעות מפושקות, הבעת פנים מותחת עם עיניים מצומצמות ושפתיים הדוקות. ואז — הידיים יורדות לאט, מצטרפות יחד בתנוחת תפילה ליד החזה, הפנים מתרככות לחלוטין, העיניים נעצמות למחצה, שפתיים נפתחות בשלווה, כל קמטי הפנים מתרככים. רקע מטושטש.",
+    english: "Same warm animation style. Medium close-up of the grandfather only. He narrates dramatically — first both hands raised and waving to the sides as if describing a shouting crowd, fingers splayed, tense facial expression with narrowed eyes and tight lips. Then — hands slowly lower, coming together in a prayer position near his chest, face completely softens, eyes half-close, lips part in serenity, all facial wrinkles relax. Blurred background."
+  },
+  {
+    title: "״אש?! מהשמיים?!״",
+    subtitle: "שיא הדרמה — אושי בהלם",
+    script: "אושי: אש?! מהשמיים?!",
+    speaker: "oshi",
+    speakerName: "אושי מדבר",
+    imageHint: "תמונת רפרנס של אושי — הבעת הפתעה.",
+    hebrew: "אותו סגנון אנימציה חמים. תקריב דרמטי צמוד לפנים של הילד. עיניים נפתחות לרווחה עד הסוף — אישונים מורחבים, גבות עפות למעלה. פה נפער בעיגול מושלם של השתאות. שתי ידיים מורמות ליד הפנים, כפות ידיים פתוחות כלפי חוץ בתנועת ״לא יכול להאמין!״ זוהר כתום-חם עדין משתקף על עור פניו, כאילו אור של אש מאירה מלמעלה. רקע מטושטש.",
+    english: "Same warm animation style. Dramatic tight close-up on the boy's face. Eyes open as wide as possible — dilated pupils, eyebrows flying up. Mouth drops open in a perfect circle of astonishment. Both hands raised near his face, palms open outward in a 'can't believe it!' gesture. A subtle warm orange glow reflects on his skin, as if firelight shining from above. Blurred background."
+  },
+  {
+    title: "סבא לוגם תה בשלווה",
+    subtitle: "״כן. ופתאום — כולם הבינו שהאחד צדק.״",
+    script: "סבא: (לוגם תה) כן. ופתאום — כולם הבינו שהאחד צדק.",
+    speaker: "saba",
+    speakerName: "סבא מדבר",
+    imageHint: "אותה תמונת רפרנס של הסבא.",
+    hebrew: "אותו סגנון אנימציה חמים. תקריב של הסבא בלבד. הוא לוגם בשלווה מוחלטת מכוס התה — שתי ידיים עוטפות את הכוס ברכות, אצבעות שלובות סביב הכוס החמה. עיניים עצומות למחצה בהנאה, עפעפיים כבדות. חיוך קל ושקט בזוויות השפתיים, קמטי חיוך עמוקים. ראש מעט מוטה לצד, זקן לבן נח על החזה. אווירה של שלווה מוחלטת — כאילו לא סיפר זה עתה את הסיפור הכי מדהים בעולם. רקע מטושטש.",
+    english: "Same warm animation style. Close-up of the grandfather only. He sips serenely from his tea cup — both hands gently wrapped around the cup, fingers interlaced around the warm cup. Eyes half-closed in pleasure, heavy eyelids. A quiet subtle smile at the corners of his lips, deep smile lines. Head slightly tilted to one side, white beard resting on his chest. An atmosphere of total calm — as if he didn't just tell the most amazing story in the world. Blurred background."
+  },
+  {
+    title: "בצלאל שואל את השאלה",
+    subtitle: "״שווה לשתוק, או שווה לדבר?״",
+    script: "בצלאל: (מחייך לאושי) אז מה אתה אומר — שווה לשתוק, או שווה לדבר?",
+    speaker: "bezalel",
+    speakerName: "בצלאל מדבר",
+    imageHint: "העלו תמונת רפרנס של בצלאל (האבא, חרדי, חולצה לבנה).",
+    hebrew: "אותו סגנון אנימציה חמים. תקריב בינוני של האב. הוא מחייך חיוך חם ורך אל בנו — עיניים מתוקות ומלאות אהבה, קמטי חיוך בצדי העיניים. ראש מוטה קלות ימינה. יד ימין פתוחה כלפי מעלה בתנועת שאלה, כאילו מציע שתי אפשרויות. יד שמאל מונחת על השולחן. הרגע רך ואינטימי — אב מלמד את בנו דרך שאלה, לא דרך הוראה.",
+    english: "Same warm animation style. Medium close-up of the father. He smiles a warm, soft smile at his son — sweet loving eyes, smile lines at the corners of his eyes. Head tilted slightly to the right. Right hand open palm-up in a questioning gesture, as if offering two options. Left hand resting on the table. The moment is soft and intimate — a father teaching his son through a question, not through instruction."
+  },
+  {
+    title: "אושי: ״שווה להתפלל!״",
+    subtitle: "הרגע שבו אושי מבין",
+    script: "אושי: (חושב) …שווה להתפלל!",
+    speaker: "oshi",
+    speakerName: "אושי מדבר",
+    imageHint: "תמונת רפרנס של אושי — חיוך גדול.",
+    hebrew: "אותו סגנון אנימציה חמים. תקריב של הילד. פניו מאירות פתאום בחיוך ענק ומנצח — עיניים נוצצות ובורקות, גבות מורמות בשמחה, חיוך רחב שחושף שיניים. יד ימין מורמת ומצביעה בהחלטיות כלפי מעלה, לשמיים. יד שמאל קפוצה באגרוף קטן של ״כן!״ הגוף מתרומם מהכיסא בהתלהבות. רגע של חוכמת ילדים טהורה.",
+    english: "Same warm animation style. Close-up of the boy. His face suddenly lights up with a huge triumphant grin — sparkling gleaming eyes, eyebrows raised in joy, wide smile showing teeth. Right hand raised pointing decisively upward, toward the sky. Left hand in a small 'yes!' fist. Body rising from the chair in excitement. A moment of pure childlike wisdom."
+  },
+  {
+    title: "סבא מחייך — פייד לשחור",
+    subtitle: "סיום — חיוך של חוכמה",
+    script: "[סבא מחייך. שחור.]",
+    speaker: "saba",
+    speakerName: "סבא",
+    imageHint: "אותה תמונת רפרנס של הסבא — חיוך שלו.",
+    hebrew: "אותו סגנון אנימציה חמים. תקריב צמוד של הסבא. חיוך עמוק, יודע, שליו — קמטים מסביב לעיניים מתעמקים, עיניים מחייכות יותר מהשפתיים, זקן לבן רך. ידיים מונחות בשלווה על הכורסה. אור חם זהוב על פניו. התמונה דועכת לאט לשחור, החיוך הוא הדבר האחרון שנעלם. תחושה של חום, חוכמה ושלום.",
+    english: "Same warm animation style. Tight close-up of the grandfather. A deep, knowing, serene smile — wrinkles around the eyes deepening, eyes smiling more than the lips, soft white beard. Hands resting peacefully on the armchair. Warm golden light on his face. The image slowly fades to black, the smile is the last thing to disappear. A feeling of warmth, wisdom, and peace."
+  },
+  {
+    title: "שאלה על המסך",
+    subtitle: "״מי הבודד שעמד מול כולם?״",
+    script: "[על המסך: ״מה הסיפור ששמעתם? מי הבודד שעמד מול כולם?״]",
+    speaker: "scene",
+    speakerName: "מסך סיום",
+    imageHint: "אין צורך בתמונה — מסך טקסט בלבד.",
+    hebrew: "מסך שחור לחלוטין. טקסט עברי מופיע באנימציה איטית בסגנון כתב יד חמים, כאילו מישהו כותב בזמן אמת: ״מה הסיפור ששמעתם? מי הבודד שעמד מול כולם?״ זוהר חם כתום עדין מאחורי הטקסט, כמו שאריות אש. נקי ופשוט. הטקסט במרכז המסך.",
+    english: "Completely black screen. Hebrew text appears in slow animation in a warm handwriting style, as if someone is writing in real time: \"מה הסיפור ששמעתם? מי הבודד שעמד מול כולם?\" (What is the story you heard? Who was the one who stood alone against everyone?) Subtle warm orange glow behind the text, like embers of fire. Clean and simple. Text centered on screen."
+  }
+];
+
+const changedState = new Array(DATA.length).fill(false);
+
+const charColors = { bezalel:'char-bezalel', oshi:'char-oshi', saba:'char-saba', scene:'char-scene' };
+
+function buildCards() {
+  const container = document.getElementById('timeline');
+  DATA.forEach((item, idx) => {
+    const card = document.createElement('div');
+    card.className = 'prompt-card';
+    card.innerHTML = `
+      <div class="prompt-header">
+        <div class="prompt-number">${idx+1}</div>
+        <div class="prompt-title-area">
+          <div class="prompt-title">${item.title} <span class="char-badge ${charColors[item.speaker]}">${item.speakerName}</span></div>
+          <div class="prompt-subtitle">${item.subtitle}</div>
+        </div>
+      </div>
+      <div class="script-line">
+        <span class="script-label">תסריט</span>
+        <span class="script-text">${item.script}</span>
+      </div>
+      <div class="image-section">
+        <div class="image-label"><span>🖼️</span> תמונת רפרנס לדמות</div>
+        <div class="image-row">
+          <div class="image-upload-zone" id="imgzone-${idx}" onclick="document.getElementById('file-${idx}').click()" ondrop="handleDrop(event,${idx})" ondragover="event.preventDefault()" ondragenter="this.style.borderColor='var(--purple)'" ondragleave="this.style.borderColor='#C4B5FD'">
+            <input type="file" id="file-${idx}" accept="image/*" onchange="handleFile(this,${idx})">
+            <button class="remove-img" onclick="removeImg(event,${idx})">✕</button>
+            <div class="upload-icon">📷</div>
+            <div class="upload-text">גררו תמונה<br>או לחצו להעלאה</div>
+          </div>
+          <div class="image-instructions">
+            <strong>${item.speakerName}</strong><br>
+            ${item.imageHint}<br><br>
+            💡 <strong>טיפ:</strong> העלו את אותה תמונת רפרנס לכל השוטים שבהם אותה דמות מדברת — זה יעזור לגרוק לשמור על עקביות.
+          </div>
+        </div>
+      </div>
+      <div class="hebrew-section">
+        <div class="hebrew-label"><span>🇮🇱</span> תיאור בעברית (ניתן לעריכה)</div>
+        <div class="hebrew-prompt" contenteditable="true" id="heb-${idx}" oninput="markChanged(${idx})">${item.hebrew}</div>
+      </div>
+      <div class="sync-bar">
+        <button class="sync-btn" id="sync-btn-${idx}" onclick="syncOne(${idx})">🔄 תרגם לאנגלית</button>
+        <span class="sync-status synced" id="sync-status-${idx}">✓ מסונכרן</span>
+      </div>
+      <div class="english-section">
+        <div class="english-label"><span>🇺🇸</span> Prompt באנגלית (לחץ להעתקה)</div>
+        <div class="prompt-text" id="eng-${idx}" onclick="copyPrompt(${idx})">${item.english}</div>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function handleFile(input, idx) {
+  if (!input.files[0]) return;
+  loadImage(input.files[0], idx);
+}
+function handleDrop(e, idx) {
+  e.preventDefault();
+  const file = e.dataTransfer.files[0];
+  if (file && file.type.startsWith('image/')) loadImage(file, idx);
+}
+function loadImage(file, idx) {
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const zone = document.getElementById(`imgzone-${idx}`);
+    let img = zone.querySelector('img');
+    if (!img) { img = document.createElement('img'); zone.appendChild(img); }
+    img.src = e.target.result;
+    zone.querySelector('.upload-icon').style.display = 'none';
+    zone.querySelector('.upload-text').style.display = 'none';
+    showToast('תמונה הועלתה בהצלחה! 🖼️');
+  };
+  reader.readAsDataURL(file);
+}
+function removeImg(e, idx) {
+  e.stopPropagation();
+  const zone = document.getElementById(`imgzone-${idx}`);
+  const img = zone.querySelector('img');
+  if (img) img.remove();
+  zone.querySelector('.upload-icon').style.display = '';
+  zone.querySelector('.upload-text').style.display = '';
+  document.getElementById(`file-${idx}`).value = '';
+}
+
+function markChanged(idx) {
+  changedState[idx] = true;
+  const st = document.getElementById(`sync-status-${idx}`);
+  st.className = 'sync-status changed';
+  st.innerHTML = '⚠ השתנה — צריך תרגום';
+}
+
+async function translateText(text) {
+  const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=he|en`;
+  const r = await fetch(url);
+  const d = await r.json();
+  if (d.responseStatus === 200 && d.responseData.translatedText) {
+    let t = d.responseData.translatedText;
+    t = t.replace(/(^|[.!?]\s+)([a-z])/g, (m,p,c) => p+c.toUpperCase());
+    return t;
+  }
+  throw new Error('fail');
+}
+
+async function syncOne(idx) {
+  const btn = document.getElementById(`sync-btn-${idx}`);
+  const st = document.getElementById(`sync-status-${idx}`);
+  const hebText = document.getElementById(`heb-${idx}`).innerText.trim();
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinning">🔄</span> מתרגם...';
+  try {
+    const translated = await translateText(hebText);
+    document.getElementById(`eng-${idx}`).textContent = translated;
+    changedState[idx] = false;
+    st.className = 'sync-status synced'; st.innerHTML = '✓ תורגם בהצלחה';
+    showToast(`פרומפט ${idx+1} תורגם בהצלחה`);
+  } catch(e) {
+    st.className = 'sync-status changed'; st.innerHTML = '✗ שגיאה — נסה שוב';
+    showToast('שגיאה בתרגום');
+  }
+  btn.disabled = false; btn.innerHTML = '🔄 תרגם לאנגלית';
+}
+
+async function syncAll() {
+  showToast('מתרגם את כל הפרומפטים שהשתנו...');
+  for (let i=0; i<DATA.length; i++) {
+    if (changedState[i]) {
+      await syncOne(i);
+      await new Promise(r=>setTimeout(r,1200));
+    }
+  }
+  showToast('כל הפרומפטים מסונכרנים! ✓');
+}
+
+function copyPrompt(idx) {
+  const el = document.getElementById(`eng-${idx}`);
+  navigator.clipboard.writeText(el.textContent.trim()).then(() => {
+    el.classList.add('copied');
+    showToast(`פרומפט ${idx+1} הועתק! 📋`);
+    setTimeout(() => el.classList.remove('copied'), 2000);
+  });
+}
+
+function copyAll() {
+  const parts = [];
+  for (let i=0; i<DATA.length; i++) parts.push(`--- Prompt ${i+1} ---\n${document.getElementById(`eng-${i}`).textContent.trim()}`);
+  navigator.clipboard.writeText(parts.join('\n\n')).then(() => showToast('כל 15 הפרומפטים הועתקו! 🎬'));
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  document.getElementById('progressFill').style.width = (h.scrollTop/(h.scrollHeight-h.clientHeight))*100+'%';
+});
+
+buildCards();
+</script>
+</body>
+</html>
